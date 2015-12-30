@@ -1,7 +1,12 @@
 package com.five9.service;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,22 @@ import com.five9.model.Conn;
 public class VccMysqlConn implements Conn{
 	private DataSource mysqlPara;
 	private JdbcTemplate jdbctemplate;
+	private String updateSql;
+	private String querySql;
+	
+	public String getUpdateSql() {
+		return updateSql;
+	}
+	public void setUpdateSql(String updateSql) {
+		this.updateSql = updateSql;
+	}
+	public String getQuerySql() {
+		return querySql;
+	}
+	@Value(value = "select * from student")
+	public void setQuerySql(String querySql) {
+		this.querySql = querySql;
+	}
 	public DataSource getMysqlPara() {
 		return mysqlPara;
 	}
@@ -30,13 +51,28 @@ public class VccMysqlConn implements Conn{
 		this.mysqlPara = mysqlPara;
 		this.jdbctemplate = new JdbcTemplate(mysqlPara);
 	}
+	public void update(){
+		this.jdbctemplate.update(updateSql);
+	}
+	public void query(){
+		 List<Map<String, Object>> ret = this.jdbctemplate.queryForList(querySql);
+		 for(Map<String,Object> map:ret){
+			 Iterator<String> iterator = map.keySet().iterator();
+			 while(iterator.hasNext()){
+				 String key = iterator.next();
+				 System.out.println(key + "->" + map.get(key));
+			 }
+		 }
+	}
+	
 	/* <p>Function to moniter connection progress</p>
 	 */
 	@Override
 	public void moniter(){
 		System.out.println();
 		System.out.println("Echo from vcc mysql server");
-		System.out.println(mysqlPara.toString());
+//		update();
+		query();
 	}
 
 }

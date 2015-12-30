@@ -20,6 +20,7 @@ public class DBConnection {
 		mysql.moniter();
 		mssql.moniter();
 	}
+
 	public Conn getMysql() {
 		return mysql;
 	}
