@@ -2,6 +2,7 @@ package com.five9.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
 
 import com.five9.model.Conn;
@@ -10,13 +11,6 @@ import com.five9.model.Parameter;
 @Primary
 public class VccMysqlConn implements Conn{
 	private Parameter mysqlPara;
-	private JdbcTemplate template;
-	public JdbcTemplate getTemplate() {
-		return template;
-	}
-	public void setTemplate(JdbcTemplate template) {
-		this.template = template;
-	}
 	public Parameter getMysqlPara() {
 		return mysqlPara;
 	}

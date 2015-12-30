@@ -32,4 +32,12 @@
 		<property name = "desPass" value ="123"></property>
 		<property name = "desSql" value="insert into rateplancomparison.vcc  (ls,userid)  select ls,userid from  ls_server.ls_report "></property>
 	 --></bean>
+	 <bean id="dataSource" 
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/mkyongjava" />
+		<property name="username" value="root" />
+		<property name="password" value="password" />
+	</bean>
 </beans>
