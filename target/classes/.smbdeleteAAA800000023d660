@@ -11,12 +11,19 @@
 	<context:annotation-config/>
 	<context:component-scan base-package="com.five9.service"></context:component-scan>
 	<context:component-scan base-package="com.five9.consumer"></context:component-scan>
-	 
-	<bean id = "mssqlPara" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name = "driverClassName" value = "com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+	<bean id = "mysqlPara" class = "com.five9.model.Parameter">
+		<property name = "driver" value="com.mysql.jdbc.Driver"></property>
+		<property name = "url" value ="jdbc:mysql://localhost:3306/ls_server"></property>
+		<property name = "username" value = "root"></property>
+		<property name = "password" value ="123"></property>
+		<property name = "sql" value="insert into rateplancomparison.lsMysql  (ls,userid)  select ls,userid from  ls_server.ls_report "></property>
+	</bean>
+	<bean id = "mssqlPara" class = "com.five9.model.Parameter">
+		<property name = "driver" value = "com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
 		<property name = "url" value = "jdbc:sqlserver://10.7.42.13:1433;databasename=EngageIp"></property>
 		<property name = "username" value = "OSS"></property>
 		<property name = "password" value = "p@ssw0rD1"></property>
+		<property name = "sql" value = "select * from Server"></property>
 		
 		
 		<!-- <property name = "desDriver" value="com.mysql.jdbc.Driver"></property>
@@ -25,12 +32,12 @@
 		<property name = "desPass" value ="123"></property>
 		<property name = "desSql" value="insert into rateplancomparison.vcc  (ls,userid)  select ls,userid from  ls_server.ls_report "></property>
 	 --></bean>
-	 <bean id="mysqlPara" 
+	 <bean id="dataSource" 
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/rateplancomparison" />
+		<property name="url" value="jdbc:mysql://localhost:3306/mkyongjava" />
 		<property name="username" value="root" />
-		<property name="password" value="123" />
+		<property name="password" value="password" />
 	</bean>
 </beans>
