@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.five9.model.Conn;
 
+/*<p>Dao Impl class. which is used to do actual job after connection with database</p>
+ * 
+ */
 @Service("dbconn")
 public class DBConnection {
 	@Autowired

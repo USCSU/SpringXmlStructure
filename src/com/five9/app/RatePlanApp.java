@@ -1,5 +1,8 @@
 package com.five9.app;
-
+/*
+ *  <p>Main function;</p> 
+ *  Entrance to whole app
+ */
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
