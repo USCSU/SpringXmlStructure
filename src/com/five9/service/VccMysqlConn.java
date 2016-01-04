@@ -17,15 +17,20 @@ import com.five9.model.Conn;
  * JdbcTemplate is used to do all the operations on database;
  * 
  */
-
-@Service("vccmysql")
-@Primary
 public class VccMysqlConn implements Conn{
 	private DataSource mysqlPara;
 	private JdbcTemplate jdbctemplate;
 	private String updateSql;
 	private String querySql;
+	private String batchInsertionSql;
 	
+	public String getBatchInsertionSql() {
+		return batchInsertionSql;
+	}
+//	@Autowired
+	public void setBatchInsertionSql(String batchInsertionSql) {
+		this.batchInsertionSql = batchInsertionSql;
+	}
 	public String getUpdateSql() {
 		return updateSql;
 	}
@@ -35,7 +40,8 @@ public class VccMysqlConn implements Conn{
 	public String getQuerySql() {
 		return querySql;
 	}
-	@Value(value = "select * from student")
+//	@Value(value = "select * from student")
+//	@Autowired
 	public void setQuerySql(String querySql) {
 		this.querySql = querySql;
 	}
@@ -46,7 +52,7 @@ public class VccMysqlConn implements Conn{
 	 * JdbcTemplate will receive mysql data source here.
 	 * 
 	 */
-	@Autowired//parameter name must meet with xml id name
+	@Autowired(required = false)//parameter name must meet with xml id name
 	public void setMysqlPara(DataSource mysqlPara) {
 		this.mysqlPara = mysqlPara;
 		this.jdbctemplate = new JdbcTemplate(mysqlPara);

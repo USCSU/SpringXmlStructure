@@ -11,6 +11,25 @@
 	<context:annotation-config/>
 	<context:component-scan base-package="com.five9.service"></context:component-scan>
 	<context:component-scan base-package="com.five9.consumer"></context:component-scan>
+	<bean id = "mysql" class = "com.five9.consumer.DBConnection">
+		<property name="connection" ref = "lsmssql"></property>
+	</bean>
+	<bean id = "mssql" class = "com.five9.consumer.DBConnection">
+		<property name="connection" ref = "vccmysql"></property>
+	</bean>
+	 <bean id="lsmssql" class = "com.five9.service.LsMSsqlConn">
+	 	<property name="mssqlPara" ref="mssqlPara"></property>
+	 	<property name="updateSql" value =""></property>
+	 	<property name="querySql" value = "select * from Server"></property>
+	 	<property name="batchInsertionSql" value = ""></property>
+	 </bean>
+	 
+	 <bean id="vccmysql" class = "com.five9.service.VccMysqlConn" primary = "true">
+	 	<property name="mysqlPara" ref="mysqlPara"></property>
+	 	<property name="updateSql" value =""></property>
+	 	<property name="querySql" value = "select * from student"></property>
+	 	<property name="batchInsertionSql" value = ""></property>
+	 </bean>
 	 
 	<bean id = "mssqlPara" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name = "driverClassName" value = "com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>

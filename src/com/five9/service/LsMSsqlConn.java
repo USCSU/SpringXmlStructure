@@ -16,29 +16,36 @@ import com.five9.model.Conn;
  * DataSource will be wired from xml configuration file. 
  * JdbcTemplate is used to do all the operations on database;
  * */
-@Service("lsmssql")
 public class LsMSsqlConn  implements Conn{
 	private DataSource mssqlPara;
 	private JdbcTemplate jdbctemplate;
 	private String updateSql;
 	private String querySql;
+	private String batchInsertionSql;
 	
-	public String getInsertSql() {
-		return updateSql;
+	public String getBatchInsertionSql() {
+		return batchInsertionSql;
 	}
-	@Value(value = "")
-	public void setInsertSql(String updateSql) {
-		this.updateSql = updateSql;
+	@Autowired 
+	public void setBatchInsertionSql(String batchInsertionSql) {
+		this.batchInsertionSql = batchInsertionSql;
 	}
 	public String getQuerySql() {
 		return querySql;
 	}
-	@Value(value = "select * from Server")
+	@Autowired
 	public void setQuerySql(String querySql) {
 		this.querySql = querySql;
 	}
 	public DataSource getMssqlPara() {
 		return mssqlPara;
+	}
+	public String getUpdateSql() {
+		return updateSql;
+	}
+	@Autowired
+	public void setUpdateSql(String updateSql) {
+		this.updateSql = updateSql;
 	}
 	/* <p>DataSource injection function. </p>
 	 * JdbcTemplate will receive Microsoft SQL Server data source here.
