@@ -1,8 +1,6 @@
 package com.five9.consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import com.five9.model.Conn;
 
@@ -21,8 +19,4 @@ public class DBConnection {
 	public void setConnection(Conn connection) {
 		this.connection = connection;
 	}
-
-	 
-	
-	
 }

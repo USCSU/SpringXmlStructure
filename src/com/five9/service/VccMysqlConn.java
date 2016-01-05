@@ -6,10 +6,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 
 import com.five9.model.Conn;
 /* <p>Provide connection to mysql database and all the needed operations</p>
@@ -23,7 +20,41 @@ public class VccMysqlConn implements Conn{
 	private String updateSql;
 	private String querySql;
 	private String batchInsertionSql;
+	private String path;
 	
+	
+	public void update(){
+		this.jdbctemplate.update(updateSql);
+	}
+	/*save the result to map*/
+	 void setResultToMysql(String path){
+		 Map<String,String> result =  new ReadCSV_XLSX().savaToMap(path);
+		 System.out.println(result);
+	}
+	
+	public void query(){
+		 List<Map<String, Object>> ret = this.jdbctemplate.queryForList(querySql);
+		 for(Map<String,Object> map:ret){
+			 Iterator<String> iterator = map.keySet().iterator();
+			 while(iterator.hasNext()){
+				 String key = iterator.next();
+				 System.out.println(key + "->" + map.get(key));
+			 }
+		 }
+	}
+	
+	/* <p>Function to moniter connection progress</p>
+	 */
+	@Override
+	public void moniter(){
+		System.out.println("Echo from vcc mysql server");
+		setResultToMysql(path);
+		System.out.println();
+//		update();
+//		query();
+	}
+	
+	/* setters and getters */
 	public String getBatchInsertionSql() {
 		return batchInsertionSql;
 	}
@@ -57,28 +88,11 @@ public class VccMysqlConn implements Conn{
 		this.mysqlPara = mysqlPara;
 		this.jdbctemplate = new JdbcTemplate(mysqlPara);
 	}
-	public void update(){
-		this.jdbctemplate.update(updateSql);
+	public String getPath() {
+		return path;
 	}
-	public void query(){
-		 List<Map<String, Object>> ret = this.jdbctemplate.queryForList(querySql);
-		 for(Map<String,Object> map:ret){
-			 Iterator<String> iterator = map.keySet().iterator();
-			 while(iterator.hasNext()){
-				 String key = iterator.next();
-				 System.out.println(key + "->" + map.get(key));
-			 }
-		 }
+	@Autowired(required = false)
+	public void setPath(String path) {
+		this.path = path;
 	}
-	
-	/* <p>Function to moniter connection progress</p>
-	 */
-	@Override
-	public void moniter(){
-		System.out.println();
-		System.out.println("Echo from vcc mysql server");
-//		update();
-		query();
-	}
-
 }

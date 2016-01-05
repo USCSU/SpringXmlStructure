@@ -11,7 +11,7 @@ public class RatePlanApp {
 		try(ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml")){
 		DBConnection mysqlConn  = (DBConnection) ctx.getBean("mysql");
 		mysqlConn.moniter();
-		DBConnection mssqlConn  = (DBConnection) ctx.getBean("mysql");
+		DBConnection mssqlConn  = (DBConnection) ctx.getBean("mssql");
 		mssqlConn.moniter();
 		}
 	}

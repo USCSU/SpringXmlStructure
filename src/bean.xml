@@ -22,6 +22,8 @@
 	 	<property name="updateSql" value =""></property>
 	 	<property name="querySql" value = "select * from Server"></property>
 	 	<property name="batchInsertionSql" value = ""></property>
+	 	<!-- absolute path pretty bad will update later -->
+	 	<property name="path" value = "InputFile/LSaccountRateplan.xlsx"></property>
 	 </bean>
 	 
 	 <bean id="vccmysql" class = "com.five9.service.VccMysqlConn" primary = "true">
@@ -29,6 +31,7 @@
 	 	<property name="updateSql" value =""></property>
 	 	<property name="querySql" value = "select * from student"></property>
 	 	<property name="batchInsertionSql" value = ""></property>
+	 	<property name="path" value = "InputFile/VccaccountRateplan.csv"></property>
 	 </bean>
 	 
 	<bean id = "mssqlPara" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">

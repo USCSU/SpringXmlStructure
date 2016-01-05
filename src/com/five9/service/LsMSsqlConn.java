@@ -6,9 +6,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 
 import com.five9.model.Conn;
 /*
@@ -22,7 +20,51 @@ public class LsMSsqlConn  implements Conn{
 	private String updateSql;
 	private String querySql;
 	private String batchInsertionSql;
+	private String path;
 	
+	public void update(){
+		this.jdbctemplate.update(updateSql);
+	}
+	public void query(){
+		 List<Map<String, Object>> ret = this.jdbctemplate.queryForList(querySql);
+		 for(Map<String,Object> map:ret){
+			 System.out.println("---------");
+			 Iterator<String> iterator = map.keySet().iterator();
+			 while(iterator.hasNext()){
+				 String key = iterator.next();
+				 System.out.println(key + "->" + map.get(key));
+			 }
+		 }
+	}
+	void setResultToMssql(String path){
+		if(path == null || path.length() ==0) throw new IllegalArgumentException("Wrong format of path :" + path);
+		Map<String,String> result = new ReadCSV_XLSX().savaToMap(path);
+		System.out.println(result);
+	}
+	
+	/* <p>Function to moniter connection progress </p> 
+	 * @param none
+	 *
+	 * */
+	
+	@Override
+	public void moniter(){
+		System.out.println();
+		System.out.println("Echo from logisense mssql server");
+		setResultToMssql(path);
+//		update();
+//		query();
+	}
+	
+	/*setters and getters*/
+	
+	public String getPath() {
+		return path;
+	}
+	@Autowired
+	public void setPath(String path) {
+		this.path = path;
+	}
 	public String getBatchInsertionSql() {
 		return batchInsertionSql;
 	}
@@ -56,32 +98,6 @@ public class LsMSsqlConn  implements Conn{
 		this.mssqlPara = mssqlPara;
 		this.jdbctemplate= new JdbcTemplate(mssqlPara);
 	}
-	public void update(){
-		this.jdbctemplate.update(updateSql);
-	}
-	public void query(){
-		 List<Map<String, Object>> ret = this.jdbctemplate.queryForList(querySql);
-		 for(Map<String,Object> map:ret){
-			 System.out.println("---------");
-			 Iterator<String> iterator = map.keySet().iterator();
-			 while(iterator.hasNext()){
-				 String key = iterator.next();
-				 System.out.println(key + "->" + map.get(key));
-			 }
-		 }
-	}
-	
-	/* <p>Function to moniter connection progress </p> 
-	 * @param none
-	 *
-	 * */
-	
-	@Override
-	public void moniter(){
-		System.out.println();
-		System.out.println("Echo from logisense mssql server");
-//		update();
-		query();
-	}
+	 
 		
 }
