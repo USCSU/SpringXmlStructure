@@ -1,4 +1,6 @@
 package com.five9.service;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -6,6 +8,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.five9.model.Conn;
@@ -21,9 +24,15 @@ public class LsMSsqlConn  implements Conn{
 	private String querySql;
 	private String batchInsertionSql;
 	private String path;
+	private String deleteSql;
+	private boolean deleteSwitch;
+	private Map<String,String> csv_xlsx;
 	
 	public void update(){
-		this.jdbctemplate.update(updateSql);
+		this.jdbctemplate.update(deleteSql);
+	}
+	public void delete(){
+		this.jdbctemplate.update(deleteSql);
 	}
 	public void query(){
 		 List<Map<String, Object>> ret = this.jdbctemplate.queryForList(querySql);
@@ -36,9 +45,24 @@ public class LsMSsqlConn  implements Conn{
 			 }
 		 }
 	}
+	private void batchInsertion(){
+		this.jdbctemplate.batchUpdate(batchInsertionSql, new BatchPreparedStatementSetter(){
+			Object[] keys = csv_xlsx.keySet().toArray();
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException{
+				String key = (String)keys[i];
+				ps.setString(1, key);
+				ps.setString(2, csv_xlsx.get(key));
+			}
+			@Override
+			public int getBatchSize(){
+				return csv_xlsx.size();
+			}
+		});
+	}
 	void setResultToMssql(String path){
 		if(path == null || path.length() ==0) throw new IllegalArgumentException("Wrong format of path :" + path);
-		Map<String,String> result = new ReadCSV_XLSX().savaToMap(path);
+		Map<String,String> result = ReadCSV_XLSX.savaToMap(path);
 		System.out.println(result);
 	}
 	
@@ -51,9 +75,9 @@ public class LsMSsqlConn  implements Conn{
 	public void moniter(){
 		System.out.println();
 		System.out.println("Echo from logisense mssql server");
-		setResultToMssql(path);
+//		setResultToMssql(path);
 //		update();
-//		query();
+		query();
 	}
 	
 	/*setters and getters*/
@@ -89,6 +113,12 @@ public class LsMSsqlConn  implements Conn{
 	public void setUpdateSql(String updateSql) {
 		this.updateSql = updateSql;
 	}
+	public String getDeleteSql() {
+		return deleteSql;
+	}
+	public void setDeleteSql(String deleteSql) {
+		this.deleteSql = deleteSql;
+	}
 	/* <p>DataSource injection function. </p>
 	 * JdbcTemplate will receive Microsoft SQL Server data source here.
 	 * 
@@ -98,6 +128,13 @@ public class LsMSsqlConn  implements Conn{
 		this.mssqlPara = mssqlPara;
 		this.jdbctemplate= new JdbcTemplate(mssqlPara);
 	}
+	public boolean isDeleteSwitch() {
+		return deleteSwitch;
+	}
+	public void setDeleteSwitch(boolean deleteSwitch) {
+		this.deleteSwitch = deleteSwitch;
+	}
+	
 	 
 		
 }
