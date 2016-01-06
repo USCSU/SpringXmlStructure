@@ -1,4 +1,5 @@
 package com.five9.service;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,28 +7,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.five9.model.Conn;
 import com.five9.model.DatabaseConnection;
-/* <p>Provide connection to mysql database and all the needed operations</p>
- * DataSource will be wired from xml configuration file. 
- * JdbcTemplate is used to do all the operations on database;
- * 
- */
-public class VccMysqlConn extends DatabaseConnection implements Conn{
-	 
-	private DataSource mysqlPara; 
+
+public class LsMysqlMimicConn extends DatabaseConnection implements Conn {
 	
+	private DataSource mysqlPara; 
+
 	/* <p>Function to moniter connection progress</p>
 	 */
 	@Override
 	public void moniter(){
 		System.out.println();
-		System.out.println("Echo from vcc mysql server.......");
+		System.out.println("Echo from ls mssql mimic server.......");
 //		update();
-		if(deleteSwitch)
-			this.delete();
+		if(deleteSwitch) this.delete();
 		readCSV_XLSX();
 		importDataToDB();
-		if(this.querySwitch)
-			query();
+		if(this.querySwitch) query();
 	}
 	
 	
@@ -94,4 +89,6 @@ public class VccMysqlConn extends DatabaseConnection implements Conn{
 	public void setQuerySwitch(boolean querySwitch) {
 		this.querySwitch = querySwitch;
 	}
+	
+
 }

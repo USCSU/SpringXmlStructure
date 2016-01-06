@@ -4,6 +4,4 @@ package com.five9.model;
  * */
 public interface Conn {
 	public void moniter();
-	public void update();
-	public void query();
 }

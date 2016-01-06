@@ -1,19 +1,20 @@
 package com.five9.model;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
-import com.five9.service.ReadCSV_XLSX;
+import com.five9.service.ReadWriteCSV_XLSX;
 
-public abstract class DatabaseConnection {
+public class DatabaseConnection {
 	
 	protected JdbcTemplate jdbctemplate;
 	protected String updateSql;
@@ -22,24 +23,34 @@ public abstract class DatabaseConnection {
 	protected String path;
 	protected String deleteSql;
 	protected boolean deleteSwitch;
+	protected boolean querySwitch;
 	protected Map<String,String> csv_xlsx;
 	
 	public void update(){
-		this.jdbctemplate.update(deleteSql);
+		this.jdbctemplate.update(updateSql);
 	}
 	public void delete(){
-		this.jdbctemplate.update(deleteSql);
+		jdbctemplate.update(deleteSql);
 	}
 	public void query(){
-		 List<Map<String, Object>> ret = this.jdbctemplate.queryForList(querySql);
-		 for(Map<String,Object> map:ret){
-			 System.out.println("---------");
-			 Iterator<String> iterator = map.keySet().iterator();
-			 while(iterator.hasNext()){
-				 String key = iterator.next();
-				 System.out.println(key + "->" + map.get(key));
-			 }
-		 }
+		List<List<String>> data = this.jdbctemplate.query(querySql, new RowMapper<List<String>>(){
+            public List<String> mapRow(ResultSet rs, int rowNum) 
+                                         throws SQLException {
+            		List<String> ret = new LinkedList<String>();
+            		ret.add(rs.getString(1));
+            		ret.add(rs.getString(2));
+            		return ret;
+            }
+       });
+		System.out.println(data);
+//		 for(Map<String,Object> map:ret){
+//			 System.out.println("---------");
+//			 Iterator<String> iterator = map.keySet().iterator();
+//			 while(iterator.hasNext()){
+//				 String key = iterator.next();
+//				 System.out.println(key + "->" + map.get(key));
+//			 }
+//		 }
 	}
 	private void batchInsertion(){
 		this.jdbctemplate.batchUpdate(batchInsertionSql, new BatchPreparedStatementSetter(){
@@ -66,7 +77,7 @@ public abstract class DatabaseConnection {
 	 protected void readCSV_XLSX(){
 		 System.out.println("Reading data from csv/xlsx file....");
 		 //static function here 
-		 csv_xlsx =  ReadCSV_XLSX.savaToMap(path);
+		 csv_xlsx =  ReadWriteCSV_XLSX.savaToMap(path);
 		 System.out.println("Done reading file.");
 	 }
 	/* <p>Function to moniter connection progress </p> 

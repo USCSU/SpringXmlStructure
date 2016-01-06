@@ -9,10 +9,13 @@ import com.five9.consumer.DBConnection;;
 public class RatePlanApp {
 	public static void main(String[] args){
 		try(ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml")){
-		DBConnection mysqlConn  = (DBConnection) ctx.getBean("mysql");
-		mysqlConn.moniter();
-		DBConnection mssqlConn  = (DBConnection) ctx.getBean("mssql");
-		mssqlConn.moniter();
+//		DBConnection mysqlConn  = (DBConnection) ctx.getBean("mysql");
+//		mysqlConn.moniter();
+//		DBConnection mssalMimic  = (DBConnection) ctx.getBean("mssqlmimic");
+//		mssalMimic.moniter();
+		DBConnection comp  = (DBConnection) ctx.getBean("comp");
+		comp.moniter();
+		
 		}
 	}
 }

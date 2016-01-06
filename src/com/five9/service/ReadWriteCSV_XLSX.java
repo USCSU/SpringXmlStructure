@@ -6,15 +6,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ReadCSV_XLSX {
+public class ReadWriteCSV_XLSX {
+	public static void writetoFile(String path, Map<String, List<String>> data){
+		
+	}
 	public static Map<String,String> savaToMap(String path){
 		if(path == null || path.isEmpty()) throw new IllegalArgumentException("Parameter is null or empty!");
 		String[] resolver = path.split("\\.");
@@ -56,7 +61,8 @@ public class ReadCSV_XLSX {
 			XSSFSheet sheet = workbook.getSheetAt(0);
         
 			for(Row row:sheet){
-				ret.put(row.getCell(0).toString(),row.getCell(1).toString());
+				DataFormatter formatter = new DataFormatter();
+				ret.put(formatter.formatCellValue(row.getCell(0)),formatter.formatCellValue(row.getCell(1)));
 			}
         
 		} catch (InvalidFormatException e) {

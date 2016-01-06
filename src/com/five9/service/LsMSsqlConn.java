@@ -13,7 +13,6 @@ import com.five9.model.DatabaseConnection;
  * */
 public class LsMSsqlConn extends DatabaseConnection implements Conn{
 	protected DataSource mssqlPara;
-	
 	@Override
 	public void moniter(){
 		System.out.println();
@@ -21,7 +20,8 @@ public class LsMSsqlConn extends DatabaseConnection implements Conn{
 //		if(deleteSwitch)
 //			this.delete();
 //		importDataToDB();
-		query();
+		if(this.querySwitch)
+			query();
 	}
 	
 	/*setters and getters*/
@@ -77,6 +77,14 @@ public class LsMSsqlConn extends DatabaseConnection implements Conn{
 	}
 	public void setDeleteSwitch(boolean deleteSwitch) {
 		this.deleteSwitch = deleteSwitch;
+	}
+
+	public boolean isQuerySwitch() {
+		return querySwitch;
+	}
+
+	public void setQuerySwitch(boolean querySwitch) {
+		this.querySwitch = querySwitch;
 	}
 	
 	 
